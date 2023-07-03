@@ -1,8 +1,36 @@
-print('Bem-vinda ao jogo da palavra ou frase secreta.\n' + 'Uma letra por tentativa.\n')
-print('Uma dica: Vimos o filme esses dia.\n')
+import getpass, os, sys
+
+def restart_program():
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
+
+def clearTerminal():
+    os.system('cls')
+
+clearTerminal()
+print('Bem-vinda ao jogo da palavra ou frase secreta.\n')
+
+secret_word = getpass.getpass('\nDigite a palavra secreta: ').lower()
+
+user_answer = input('\nDeseja incluir uma dica? ').lower()
+
+dica1 = None
+dica2 = None
+
+if user_answer == "sim" or user_answer == "s" or user_answer == "yes" or user_answer == "y":
+    print('\nVocê pode incluir até 2 dicas.\n' + 'Se não deseja incluir mais dicas, digite "sair"')
+    while dica1 != "sair" and dica2 != "sair" and dica1 != "" and dica2 != "":
+        dica1 = input('\nPrimeira dica: ')
+        if dica1 == "sair" or dica1 == "":
+            continue
+        dica2 = input('Segunda dica: ')
+        if dica2 == 'sair' or dica2 == "":
+            continue
+    else:
+        print('\nAs dicas fornecidas serão exibidas durante o jogo')
+        input('Pressione "Enter" para continuar.')
 
 user_word = ""
-secret_word = 'wall e'
 tentativas = 0
 
 for letter in secret_word:
@@ -13,10 +41,12 @@ for letter in secret_word:
 
 listletter =  list(user_word)
 
+os.system('cls')
+
 while True:
 
-    if tentativas > 5:
-        print('\nOutra dica: Evaaaa\n')
+    if tentativas == 5 and dica1 != 'sair' and dica1 != '':
+        print('\nAqui vai uma dica para você: ',dica1)
 
     guess_word = ''.join(listletter)
     user_letter = input('\nDigite uma letra: ').lower()
@@ -46,4 +76,10 @@ while True:
 
     tentativas += 1
 
-print(f'\nParabéns, você conseguiu em {tentativas} tentativas\n')
+print(f'\nParabéns, você conseguiu em {tentativas} tentativas!')
+print(f'A palavra secreta era "{secret_word}"\n')
+user_answer = input('Deseja mais uma rodada? Sim ou não. ').lower()
+if user_answer == "sim":
+    restart_program()
+else:
+    quit()
