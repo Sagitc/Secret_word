@@ -4,13 +4,19 @@ def clearTerminal():
     os.system('cls')
 
 def checkPositiv(valor):
-    if valor == "sim" or valor == "s" or valor == "yes" or valor == "y":
+
+    word =  valor.replace('.','')
+
+    if word == "sim" or word == "s" or word == "yes" or word == "y":
         return True
     else: 
         return False
     
 def checkNegativ(valor):
-    if valor == "não" or valor == "nao" or valor == "no" or valor == "n":
+    
+    word =  valor.replace('.','')
+
+    if word == "não" or word == "nao" or word == "no" or word == "n":
         return True
     else: 
         return False
@@ -24,12 +30,12 @@ def tips():
         dica1 = input('\nPrimeira dica: ')
         if dica1 == "sair" or dica1 == "exit":
             quit()
-        elif dica1 == "sair" or dica1 == ""  or dica1 == " ":
+        elif dica1 == "" or dica1 == " ":
             continue
         dica2 = input('Segunda dica: ')
         if dica2 == 'sair' or dica2 == "exit":
             quit()
-        elif dica2 == 'sair' or dica2 == "" or dica2 == " ":
+        elif  dica2 == "" or dica2 == " ":
             continue
         print('\nAs dicas fornecidas serão exibidas durante o jogo')
         input('Pressione <enter> para continuar.')
@@ -43,8 +49,15 @@ user_answer = ""
 tentativas = 0
 
 clearTerminal()
+
+#####                                     #####
+####                                      ####
+#####           PARTE DO MESTRE           #####
+####                                      ####
+#####                                     #####
+####                                      ####
+
 print('PART 1 - MASTER')
-# print('Bem-vinda ao jogo da palavra ou frase secreta.\n')
 
 while True:
     secret_word = input('\nInforme a palavra/frase secreta: ').lower()
@@ -60,16 +73,16 @@ while True:
     user_answer = input('\nDeseja incluir uma dica? ').lower()
     if user_answer == "sair" or user_answer == "exit":
         quit()
-    elif user_answer != "sim" and user_answer != "não" and user_answer != "yes" and user_answer != "no" \
-        and user_answer != "nao" and user_answer != "y" and user_answer != "n" and user_answer != "s":
-        print('Resposta inválida')
-    else:
+    elif checkPositiv(user_answer):
+        tip1, tip2 = tips()
         break
+    elif checkNegativ(user_answer):
+        break
+    else:
+        print('\nResposta inválida, tente novamente.')
+        input('Pressione qualquer tecla para continuar')
+        continue
 
-if checkPositiv(user_answer):
-    tip1, tip2 = tips()
-elif not checkNegativ(user_answer):
-    print('Resposta inválida.')
 
 for letter in secret_word:
     if letter == " ":
@@ -80,6 +93,15 @@ for letter in secret_word:
 secret_list =  list(user_word)
 
 clearTerminal()
+
+
+###                                               ###   
+##                                                ## 
+###                 PARTE DO PLAYER               ###
+##                                                ##
+###                                               ###
+
+
 print('PART 2 - PLAYER')
 
 while True:
@@ -96,6 +118,25 @@ while True:
         clearTerminal()
         print('PART 2 - PLAYER')
 
+    if tentativas == (len(secret_word)//2):
+        user_answer = input('\nDeseja advinhar a palavra completar? ')
+
+        if checkNegativ(user_answer):
+            continue
+        elif checkPositiv(user_answer):
+            user_answer = input('\nQual é a palavra? ')
+            if user_answer == secret_word:
+                tentativas += 1
+                break
+            else:
+                print('\nResposta incorreta.')
+                input('Pressione qualquer tecla para continuar')
+                tentativas += 1
+                continue
+        else:
+            print('\nReposta inválida, tente novamente.')
+            input('Pressione qualquer tecla para continuar')
+            continue
 
     user_letter = input('\nDigite uma letra: ').lower()
 
