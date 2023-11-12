@@ -3,6 +3,14 @@ import os
 def clearTerminal():
     os.system('cls')
 
+def checkQuit(valor):
+    if valor == "sair" or valor == "quit" or valor == "exit":
+        return True
+
+def checkNeutral(valor):
+    if valor == "" or valor == " ":
+        return True
+
 def checkPositiv(valor):
 
     word =  valor.replace('.','')
@@ -26,20 +34,29 @@ def tips():
     dica2 = None
 
     print('\nVocê pode incluir até 2 dicas.\n' + 'Se não desejar incluir mais dicas, deixe em branco.')
-    while dica1 != "sair" and dica2 != "sair" and dica1 != "" and dica2 != "" and dica1 != " " and dica2 != " ":
+    while dica1 != "" and dica2 != "" and dica1 != " " and dica2 != " ":
+
         dica1 = input('\nPrimeira dica: ')
-        if dica1 == "sair" or dica1 == "exit":
-            quit()
-        elif dica1 == "" or dica1 == " ":
-            continue
+
+        if checkQuit(dica1) or checkNeutral(dica1):
+            user_answer = input(f'\nTem certeza que deseja sair sem adicionar nenhuma dica? ')
+            if checkPositiv(user_answer):
+                break
+            elif checkNegativ(user_answer):
+                dica1 = None
+                continue
+            else:
+                print('\nResposta inválida.')
+                input('Pressione <enter> para continuar.')
+                continue
+
         dica2 = input('Segunda dica: ')
-        if dica2 == 'sair' or dica2 == "exit":
-            quit()
-        elif  dica2 == "" or dica2 == " ":
-            continue
-        print('\nAs dicas fornecidas serão exibidas durante o jogo')
-        input('Pressione <enter> para continuar.')
-        break
+        
+        if checkQuit(dica1) or checkNeutral(dica1):
+            break
+
+    print('\nAs dicas fornecidas serão exibidas durante o jogo')
+    input('Pressione <enter> para continuar.')
     return dica1, dica2
 
 tip1 = None
