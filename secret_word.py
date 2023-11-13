@@ -145,9 +145,27 @@ while True:
         clearTerminal()
         print('PART 2 - PLAYER')
 
+    if tentativas == len(secret_word)*3:
+        clearTerminal()
+        print('PART 2 - PLAYER')
+        print('\nSuas chances esgotaram, agora é sua última tentativa.')
+        print('\nProgresso: '+guess_word)
+        user_answer = input('\nQual é a palavra/frase secreta? ')
+
+        if checkNegativ(user_answer) or checkNeutral(user_answer) or checkPositiv(user_answer) or checkQuit(user_answer) or user_answer != secret_word:
+            clearTerminal()
+            print('\nQue pena, você perdeu o jogo!')
+            print('A resposta correta era "'+secret_word+'"')
+            input('Mais sorte da próxima :D:D')
+            quit()
+        else:
+            break
+
     if tentativas%5 == 0 and tentativas != 0:
+        clearTerminal()
+        print('PART 2 - PLAYER')
         print('\nGrande chance de advinhar a palavra/frase completa')
-        print('\n'+guess_word)
+        print('\nProgresso: '+guess_word)
         user_answer = input('Qual é o seu palpite? ')
 
         if checkQuit(user_answer):
@@ -156,6 +174,9 @@ while True:
             print('\n Resposta inválida.')
             input('Pressione qualquer tecla para continuar')
             tentativas += 1
+            clearTerminal()
+            print('PART 2 - PLAYER')
+            print('\nProgresso: '+guess_word+'\n')
             continue
         elif user_answer == secret_word:
             tentativas += 1
@@ -164,6 +185,9 @@ while True:
             print('\nResposta incorreta.')
             input('Pressione qualquer tecla para continuar')
             tentativas += 1
+            clearTerminal()
+            print('PART 2 - PLAYER')
+            print('\nProgresso: '+guess_word+'\n')
             continue
 
     user_letter = input('\nDigite uma letra: ').lower()
