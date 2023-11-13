@@ -13,18 +13,18 @@ def checkNeutral(valor):
 
 def checkPositiv(valor):
 
-    word =  valor.replace('.','')
+    valor =  valor.replace('.','').lower()
 
-    if word == "sim" or word == "s" or word == "yes" or word == "y":
+    if valor == "sim" or valor == "s" or valor == "yes" or valor == "y":
         return True
     else: 
         return False
     
 def checkNegativ(valor):
     
-    word =  valor.replace('.','')
+    valor =  valor.replace('.','').lower()
 
-    if word == "não" or word == "nao" or word == "no" or word == "n":
+    if valor == "não" or valor == "nao" or valor == "no" or valor == "n":
         return True
     else: 
         return False
@@ -37,8 +37,9 @@ def tips():
     while dica1 != "" and dica2 != "" and dica1 != " " and dica2 != " ":
 
         dica1 = input('\nPrimeira dica: ')
-
-        if checkQuit(dica1) or checkNeutral(dica1):
+        if checkQuit(dica1):
+            quit()
+        elif checkNeutral(dica1):
             user_answer = input(f'\nTem certeza que deseja sair sem adicionar nenhuma dica? ')
             if checkPositiv(user_answer):
                 break
@@ -49,11 +50,17 @@ def tips():
                 print('\nResposta inválida.')
                 input('Pressione <enter> para continuar.')
                 continue
+        elif checkPositiv(dica1) or checkNegativ(dica1):
+            print('\nResposta inválida.')
+            input('Pressione <enter> para continuar.')
+            continue
 
         dica2 = input('Segunda dica: ')
         
-        if checkQuit(dica1) or checkNeutral(dica1):
+        if checkNeutral(dica2):
             break
+        elif checkQuit(dica2):
+            quit() 
 
     print('\nAs dicas fornecidas serão exibidas durante o jogo')
     input('Pressione <enter> para continuar.')
@@ -78,8 +85,11 @@ print('PART 1 - MASTER')
 
 while True:
     secret_word = input('\nInforme a palavra/frase secreta: ').lower()
-    if secret_word == "sair" or secret_word == "exit":
-        quit()
+
+    if checkQuit(secret_word) or checkNegativ(secret_word) or checkPositiv(secret_word) or checkNeutral(secret_word) or secret_word.isdigit():
+        print('\nNão é possível definir essa palavra como a palavra secreta.')
+        input('Pressione qualquer tecla para continuar')
+        continue
     elif len(secret_word) < 3:
         print('A palavra/secreta deve contem no mínimo 3 letras.')
         continue
@@ -88,7 +98,7 @@ while True:
 
 while True:
     user_answer = input('\nDeseja incluir uma dica? ').lower()
-    if user_answer == "sair" or user_answer == "exit":
+    if checkQuit(user_answer):
         quit()
     elif checkPositiv(user_answer):
         tip1, tip2 = tips()
@@ -135,29 +145,30 @@ while True:
         clearTerminal()
         print('PART 2 - PLAYER')
 
-    if tentativas == (len(secret_word)//2):
-        user_answer = input('\nDeseja advinhar a palavra completar? ')
+    if tentativas%5 == 0 and tentativas != 0:
+        print('\nGrande chance de advinhar a palavra/frase completa')
+        print('\n'+guess_word)
+        user_answer = input('Qual é o seu palpite? ')
 
-        if checkNegativ(user_answer):
-            continue
-        elif checkPositiv(user_answer):
-            user_answer = input('\nQual é a palavra? ')
-            if user_answer == secret_word:
-                tentativas += 1
-                break
-            else:
-                print('\nResposta incorreta.')
-                input('Pressione qualquer tecla para continuar')
-                tentativas += 1
-                continue
-        else:
-            print('\nReposta inválida, tente novamente.')
+        if checkQuit(user_answer):
+            quit()
+        elif checkNegativ(user_answer) or checkPositiv(user_answer) or checkNeutral(user_answer):
+            print('\n Resposta inválida.')
             input('Pressione qualquer tecla para continuar')
+            tentativas += 1
+            continue
+        elif user_answer == secret_word:
+            tentativas += 1
+            break
+        else:
+            print('\nResposta incorreta.')
+            input('Pressione qualquer tecla para continuar')
+            tentativas += 1
             continue
 
     user_letter = input('\nDigite uma letra: ').lower()
 
-    if user_letter == "sair" or user_letter == "exit":
+    if checkQuit(user_letter):
         quit()
     elif len(user_letter) > 1 or len(user_letter) <= 0 or user_letter.isdigit():
         print('Digite apenas uma letra.')
