@@ -1,4 +1,4 @@
-# Secret_word_py
+# Secret_word
   Esse é um jogo curto de duas partes: a primeira onde o mestre do jogo estipula a palavra/frase secreta e se haverá ou não dicas e a segunda parte onde o jogador tenta advinhar a palavra/frase secreta, letra por letra.
   A primeira parte, como já dito, deve ser feita apenas pelo mestre sem que o jogador veja para que não tome spoiler.
 
